@@ -14,5 +14,15 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-require "capistrano/ops/help"
-require "capistrano/ops/version"
+require "capistrano"
+
+Capistrano::Configuration.instance.load do
+  namespace :ops do
+    desc "Display the CapOps task list"
+    task :help do
+      Capistrano::CLI.parse(["-T"]).task_list(self, "^ops(?::[^:]+)*$")
+    end
+
+    alias_task :default, :help
+  end
+end
