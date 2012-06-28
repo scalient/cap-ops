@@ -14,5 +14,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+require "capistrano/ops/dsl"
 require "capistrano/ops/help"
 require "capistrano/ops/version"
