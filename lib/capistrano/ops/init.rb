@@ -14,7 +14,19 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-require "capistrano/ops/dsl"
-require "capistrano/ops/help"
-require "capistrano/ops/init"
-require "capistrano/ops/version"
+require "capistrano"
+
+Capistrano::Configuration.instance.load do
+  namespace :ops do
+    desc "[internal] Initialize the CapOps task environment"
+    task :init do
+      set :cache_dir, fetch(:cache_dir, ".cache/ops")
+      set :config_root, fetch(:config_root, "config/ops")
+
+      Pathname.new(fetch(:config_root)).mkpath
+
+      set :prefix, fetch(:prefix, "/usr/local")
+      set :user, fetch(:user, "ubuntu")
+    end
+  end
+end
