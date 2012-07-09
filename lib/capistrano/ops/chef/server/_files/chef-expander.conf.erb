@@ -1,0 +1,34 @@
+# chef-expander - Chef Expander
+#
+# Chef Expander provides indexing of Solr for Chef Server
+
+description "Chef Expander"
+
+start on filesystem
+stop on runlevel [!2345]
+
+respawn
+respawn limit 5 30
+
+setuid chef
+chdir /home/chef/server
+
+<% if respond_to?(:rbenv_version) %>
+env RBENV_VERSION=<%= rbenv_version.shellescape %>
+<% end %>
+
+pre-start script
+    test -x "\
+`<% if respond_to?(:rbenv_version) %>rbenv exec<% end %> bundle show chef-expander`\
+/bin/chef-expander" || { stop; exit 0; }
+end script
+
+script
+    prefix=<%= prefix.shellescape %>
+
+    exec <% if respond_to?(:rbenv_version) %>rbenv exec<% end %> bundle exec chef-expander \
+        -c "${prefix}/etc/chef-server/solr.rb" \
+        -L "${prefix}/var/log/chef-server/expander.log" \
+        -n 1 \
+        -i 1
+end script

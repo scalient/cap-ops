@@ -1,0 +1,25 @@
+# Installs the given file to a directory and assigns ownership to that directory's user/group.
+function install_file {
+
+    local -- src_file=$1
+    local -- dst_dir=$2
+
+    if [[ -f "$src_file" ]]; then
+
+        sudo -- mv -- "$src_file" "$dst_dir"
+        sudo -- chown -h -- "$(stat -L -c "%u:%g" -- "$dst_dir")" "${dst_dir}/$(basename -- "$src_file")"
+    fi
+}
+
+# Installs the given Ubuntu Upstart job file.
+function install_upstart {
+
+    local -- upstart_file=$1
+
+    if [[ -f "$upstart_file" ]]; then
+
+        sudo -- mv -- "$upstart_file" /etc/init
+        sudo -- chown -h -- "$(stat -L -c "%u:%g" -- /etc/init)" "/etc/init/$(basename -- "$upstart_file")"
+        sudo -- ln -sfn -- /lib/init/upstart-job "/etc/init.d/$(basename -- "${upstart_file%%.conf}")"
+    fi
+}

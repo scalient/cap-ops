@@ -15,6 +15,7 @@
 # the License.
 
 require "capistrano/ops/chef/init"
+require "capistrano/ops/chef/server/install"
 require "capistrano/ops/dsl"
 require "capistrano/ops/help"
 require "capistrano/ops/init"

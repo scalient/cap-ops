@@ -1,0 +1,48 @@
+# Creates the chef user with the given home directory.
+function chef_create_user {
+
+    local -- chef_home=$1
+
+    if [[ -z "$(grep -P -- "^chef:" /etc/passwd)" ]]; then
+        sudo -- useradd -Um \
+            --shell "/bin/bash" \
+            --home "$chef_home" \
+            --comment "Opscode Chef" \
+            -- chef
+    fi
+}
+
+# Installs the given repository and checks out a specific branch.
+function chef_install_repo {
+
+    local -- dst_repo=$1
+    local -- src_repo=$2
+    local -- branch=$3
+
+    if [[ ! -d "$dst_repo" ]]; then
+
+        sudo -u chef -- git init -- "$dst_repo"
+
+        cd -- "$dst_repo" \
+            && sudo -u chef -- git remote add -t "$branch" -m "$branch" -- origin "$src_repo" \
+            && sudo -u chef -- git fetch -q -- origin \
+            && sudo -u chef -- git checkout -tq -b "$branch" "origin/${branch}" \
+            ; cd -- "$cur_dir"
+
+    else
+
+        cd -- "$dst_repo" && sudo -u chef -- git pull -q --rebase; cd -- "$cur_dir"
+    fi
+}
+
+# Creates the given directory and assigns ownership to the chef user.
+function chef_create_dir {
+
+    local -- chef_dir=$1
+
+    if [[ ! -d "$chef_dir" ]]; then
+
+        sudo -- mkdir -p -- "$chef_dir"
+        sudo -- chown -hR -- "chef:chef" "$chef_dir"
+    fi
+}

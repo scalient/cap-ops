@@ -1,0 +1,34 @@
+# chef-server-webui - Chef Server WebUI
+#
+# Chef Server WebUI provides the browser-accessible UI to the Chef Server API
+
+description "Chef Server WebUI"
+
+start on filesystem
+stop on runlevel [!2345]
+
+respawn
+respawn limit 5 30
+
+setuid chef
+chdir /home/chef/server
+
+<% if respond_to?(:rbenv_version) %>
+env RBENV_VERSION=<%= rbenv_version.shellescape %>
+<% end %>
+
+pre-start script
+    test -x "\
+`<% if respond_to?(:rbenv_version) %>rbenv exec<% end %> bundle show chef-server-webui`\
+/bin/chef-server-webui" || { stop; exit 0; }
+end script
+
+script
+    prefix=<%= prefix.shellescape %>
+
+    exec <% if respond_to?(:rbenv_version) %>rbenv exec<% end %> bundle exec chef-server-webui \
+        -C "${prefix}/etc/chef-server/server.rb" \
+        -L "${prefix}/var/log/chef-server/server-webui.log" \
+        -e production \
+        -p 4040
+end script

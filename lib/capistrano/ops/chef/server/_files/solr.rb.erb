@@ -1,0 +1,6 @@
+solr_jetty_path <%= prefix.dump %> "/var/chef-server/support/solr/jetty"
+solr_data_path  <%= prefix.dump %> "/var/chef-server/support/solr/data"
+solr_home_path  <%= prefix.dump %> "/var/chef-server/support/solr/home"
+solr_heap_size  "512M"
+
+umask 0022

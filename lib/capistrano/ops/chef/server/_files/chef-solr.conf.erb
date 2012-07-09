@@ -1,0 +1,33 @@
+# chef-solr - Chef Solr
+#
+# Chef Solr provides Solr search for Chef Server
+
+description "Chef Solr"
+
+start on filesystem
+stop on runlevel [!2345]
+
+respawn
+respawn limit 5 30
+
+setuid chef
+chdir /home/chef/server
+
+<% if respond_to?(:rbenv_version) %>
+env RBENV_VERSION=<%= rbenv_version.shellescape %>
+<% end %>
+
+pre-start script
+    test -x "\
+`<% if respond_to?(:rbenv_version) %>rbenv exec<% end %> bundle show chef-solr`\
+/bin/chef-solr" || { stop; exit 0; }
+end script
+
+script
+    prefix=<%= prefix.shellescape %>
+
+    # Avoid the bug filed at "http://tickets.opscode.com/browse/CHEF-3324": Pipe stdout to /dev/null.
+    exec <% if respond_to?(:rbenv_version) %>rbenv exec<% end %> bundle exec chef-solr \
+        -c "${prefix}/etc/chef-server/solr.rb" \
+        -L "${prefix}/var/log/chef-server/solr.log" > /dev/null
+end script
