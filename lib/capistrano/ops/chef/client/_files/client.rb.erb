@@ -1,0 +1,20 @@
+log_level               :info
+log_location            STDOUT
+chef_server_url         "http://" <%= chef_server.dump %> ":4000"
+validation_client_name  "chef-validator"
+
+<% if !chef_node_name.nil? %>
+node_name               <%= chef_node_name.dump %>
+<% end %>
+
+client_key              <%= prefix.dump %> "/etc/chef-client/client.pem"
+validation_key          <%= prefix.dump %> "/etc/chef-client/validation.pem"
+
+file_cache_path         <%= prefix.dump %> "/var/chef-client/cache"
+file_backup_path        <%= prefix.dump %> "/var/chef-client/backup"
+node_path               <%= prefix.dump %> "/var/chef-client/node"
+cache_type              "BasicFile"
+cache_options           :path => <%= prefix.dump %> "/var/chef-client/checksums"
+
+umask                   0022
+client_fork             false

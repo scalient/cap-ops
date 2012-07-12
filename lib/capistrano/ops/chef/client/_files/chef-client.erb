@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+prefix=<%= prefix.shellescape %>
+
+export -- BUNDLE_GEMFILE="/home/chef/client/Gemfile"
+
+<% if respond_to?(:rbenv_version) %>
+ruby="rbenv exec ruby"
+
+export -- RBENV_VERSION=<%= rbenv_version.shellescape %>
+<% else %>
+ruby="ruby"
+<% end %>
+
+exec -- $ruby -- "${prefix}/bin/chef-client.rb" -c "${prefix}/etc/chef-client/client.rb" "$@"

@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 #
 # Copyright 2012 Roy Liu
@@ -14,10 +15,17 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-require "capistrano/ops/chef/client/install"
-require "capistrano/ops/chef/init"
-require "capistrano/ops/chef/server/install"
-require "capistrano/ops/dsl"
-require "capistrano/ops/help"
-require "capistrano/ops/init"
-require "capistrano/ops/version"
+ENV["BUNDLE_GEMFILE"] ||= "/home/chef/client/Gemfile"
+
+require "rubygems"
+require "bundler"
+
+Bundler.setup
+
+# Scrub the environment to make it more friendly for processes spawned by the Chef client.
+ENV.delete("BUNDLE_BIN_PATH")
+ENV.delete("GEM_HOME")
+ENV.delete("GEM_PATH")
+ENV.delete("RUBYOPT")
+
+load Gem.bin_path("chef", "chef-client")
