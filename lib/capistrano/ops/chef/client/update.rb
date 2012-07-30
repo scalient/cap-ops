@@ -14,11 +14,24 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-require "capistrano/ops/chef/client/install"
-require "capistrano/ops/chef/client/update"
-require "capistrano/ops/chef/init"
-require "capistrano/ops/chef/server/install"
-require "capistrano/ops/dsl"
-require "capistrano/ops/help"
-require "capistrano/ops/init"
-require "capistrano/ops/version"
+require "capistrano"
+require "pathname"
+
+Capistrano::Configuration.instance.load do
+  namespace :ops do
+    namespace :chef do
+      namespace :client do
+        desc "Run the Opscode Chef client"
+        task :update, :roles => :chef_client do
+          run "bash",
+              :data => render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
+
+          run "bash",
+              :data => render(Pathname.new("../_files/update.sh.erb").expand_path(__FILE__))
+        end
+
+        before "ops:chef:client:update", "ops:chef:init"
+      end
+    end
+  end
+end
