@@ -74,6 +74,7 @@ sudo -E -u chef -- $bundle install --quiet --path vendor/bundle
 sudo -E -u chef -- $bundle exec chef-solr-installer -f -c "${prefix}/etc/chef-server/solr.rb" > /dev/null
 
 # Use our sneaky Knife plugin to bypass the Chef server and prime the local CouchDB instance with client keys.
+$bundle exec knife client create --admin --private-key "${cache_dir}/knife.pem" -- chef-knife
 $bundle exec knife client create --private-key "${cache_dir}/validation.pem" -- chef-validator
 $bundle exec knife client create --admin --private-key "${cache_dir}/webui.pem" -- chef-webui
 

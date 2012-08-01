@@ -17,6 +17,7 @@
 require "capistrano/ops/chef/client/install"
 require "capistrano/ops/chef/client/update"
 require "capistrano/ops/chef/init"
+require "capistrano/ops/chef/knife/setup"
 require "capistrano/ops/chef/server/install"
 require "capistrano/ops/dsl"
 require "capistrano/ops/help"
