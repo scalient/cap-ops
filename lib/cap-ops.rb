@@ -15,6 +15,7 @@
 # the License.
 
 require "capistrano/ops/chef/client/install"
+require "capistrano/ops/chef/client/setup"
 require "capistrano/ops/chef/client/update"
 require "capistrano/ops/chef/init"
 require "capistrano/ops/chef/knife/setup"

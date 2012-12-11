@@ -7,6 +7,7 @@ validation_client_name  "chef-validator"
 node_name               <%= chef_node_name.dump %>
 <% end %>
 
+<% if current_task.name == :install %>
 client_key              <%= prefix.dump %> "/etc/chef-client/client.pem"
 validation_key          <%= prefix.dump %> "/etc/chef-client/validation.pem"
 
@@ -15,6 +16,7 @@ file_backup_path        <%= prefix.dump %> "/var/chef-client/backup"
 node_path               <%= prefix.dump %> "/var/chef-client/node"
 cache_type              "BasicFile"
 cache_options           :path => <%= prefix.dump %> "/var/chef-client/checksums"
+<% end %>
 
 umask                   0022
 client_fork             false
