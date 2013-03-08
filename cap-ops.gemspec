@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.licenses = ["Apache-2.0"]
   s.authors = ["Roy Liu"]
   s.email = ["carsomyr@gmail.com"]
-  s.homepage = "https://github.com/carsomyr/cap-ops"
+  s.homepage = "https://github.com/scalient/cap-ops"
   s.summary = "CapOps is a Capistrano plugin for bootstrapping cloud deployments"
   s.description = "CapOps is a Capistrano plugin for bootstrapping cloud deployments. It automates low-level tasks" \
     " like Opscode Chef server/client installation and other DevOps administration tasks."
