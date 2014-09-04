@@ -35,9 +35,9 @@ class Chef
       end
 
       option :private_key,
-             :short => "-p PRIVATE_KEY",
-             :long => "--private-key PRIVATE_KEY",
-             :description => "The user-generated private key"
+             short: "-p PRIVATE_KEY",
+             long: "--private-key PRIVATE_KEY",
+             description: "The user-generated private key"
 
       run_method = instance_method(:run)
 

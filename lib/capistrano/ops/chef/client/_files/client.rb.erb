@@ -15,7 +15,7 @@ file_cache_path         <%= prefix.dump %> "/var/chef-client/cache"
 file_backup_path        <%= prefix.dump %> "/var/chef-client/backup"
 node_path               <%= prefix.dump %> "/var/chef-client/node"
 cache_type              "BasicFile"
-cache_options           :path => <%= prefix.dump %> "/var/chef-client/checksums"
+cache_options           path: <%= prefix.dump %> "/var/chef-client/checksums"
 <% end %>
 
 umask                   0022

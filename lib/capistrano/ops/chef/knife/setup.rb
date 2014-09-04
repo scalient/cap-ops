@@ -23,7 +23,7 @@ Capistrano::Configuration.instance.load do
       namespace :knife do
         desc "Setup Knife on the local machine"
         task :setup do
-          chef_server = find_servers(:roles => :chef_server)[0]
+          chef_server = find_servers(roles: :chef_server)[0]
 
           chef_dir = Pathname.new(".chef").expand_path(Dir.home)
           chef_dir.mkpath
@@ -36,7 +36,7 @@ Capistrano::Configuration.instance.load do
 
           Pathname.new("knife.rb").expand_path(chef_dir).open("wb") do |f|
             f.write(render(Pathname.new("../_files/knife.rb.erb").expand_path(__FILE__),
-                           :chef_server => chef_server.host))
+                           chef_server: chef_server.host))
           end
         end
 

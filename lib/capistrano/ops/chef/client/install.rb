@@ -22,11 +22,11 @@ Capistrano::Configuration.instance.load do
     namespace :chef do
       namespace :client do
         desc "Install the Opscode Chef client"
-        task :install, :roles => :chef_client do
+        task :install, roles: :chef_client do
           chef_clients = find_servers_for_task(current_task)
 
           if !exists?(:chef_server)
-            chef_server = find_servers(:roles => :chef_server)[0]
+            chef_server = find_servers(roles: :chef_server)[0]
           else
             chef_server = Capistrano::ServerDefinition.new(fetch(:chef_server))
           end
@@ -40,33 +40,33 @@ Capistrano::Configuration.instance.load do
           end
 
           run "bash",
-              :data => render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
+              data: render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
 
           chef_clients.each do |chef_client|
             put render(Pathname.new("../_files/client.rb.erb").expand_path(__FILE__),
-                       :chef_node_name => chef_client.options[:chef_node_name],
-                       :chef_server => chef_client.host != chef_server.host ? chef_server.host : "localhost"),
+                       chef_node_name: chef_client.options[:chef_node_name],
+                       chef_server: chef_client.host != chef_server.host ? chef_server.host : "localhost"),
                 "#{fetch(:cache_dir)}/chef/client.rb",
-                :hosts => chef_client.host,
-                :mode => 0644
+                hosts: chef_client.host,
+                mode: 0644
           end
 
           put render(Pathname.new("../_files/chef-client.erb").expand_path(__FILE__)),
               "#{fetch(:cache_dir)}/chef/chef-client",
-              :mode => 0755
+              mode: 0755
 
           put Pathname.new("../_files/chef-client.rb").expand_path(__FILE__).open { |f| f.read },
               "#{fetch(:cache_dir)}/chef/chef-client.rb",
-              :mode => 0755
+              mode: 0755
 
           put Pathname.new(fetch(:validation_key)).expand_path(fetch(:config_root)).open { |f| f.read },
               "#{fetch(:cache_dir)}/chef/validation.pem",
-              :mode => 0600
+              mode: 0600
 
           run "bash",
-              :data => render([Pathname.new("../../../_files/includes.sh.erb").expand_path(__FILE__),
-                               Pathname.new("../../_files/includes.sh.erb").expand_path(__FILE__),
-                               Pathname.new("../_files/install.sh.erb").expand_path(__FILE__)])
+              data: render([Pathname.new("../../../_files/includes.sh.erb").expand_path(__FILE__),
+                            Pathname.new("../../_files/includes.sh.erb").expand_path(__FILE__),
+                            Pathname.new("../_files/install.sh.erb").expand_path(__FILE__)])
         end
 
         before "ops:chef:client:install", "ops:chef:init"

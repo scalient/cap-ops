@@ -11,7 +11,7 @@ cookbook_tarball_path           <%= prefix.dump %> "/var/chef-server/cookbook-ta
 sandbox_path                    <%= prefix.dump %> "/var/chef-server/sandboxes"
 checksum_path                   <%= prefix.dump %> "/var/chef-server/checksums"
 cache_type                      "BasicFile"
-cache_options                   :path => <%= prefix.dump %> "/var/chef-server/checksums"
+cache_options                   path: <%= prefix.dump %> "/var/chef-server/checksums"
 
 file_cache_path                 <%= prefix.dump %> "/var/chef-server/cache"
 node_path                       <%= prefix.dump %> "/var/chef-server/nodes"

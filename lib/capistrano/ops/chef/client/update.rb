@@ -22,12 +22,12 @@ Capistrano::Configuration.instance.load do
     namespace :chef do
       namespace :client do
         desc "Run the Opscode Chef client"
-        task :update, :roles => :chef_client do
+        task :update, roles: :chef_client do
           run "bash",
-              :data => render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
+              data: render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
 
           run "bash",
-              :data => render(Pathname.new("../_files/update.sh.erb").expand_path(__FILE__))
+              data: render(Pathname.new("../_files/update.sh.erb").expand_path(__FILE__))
         end
 
         before "ops:chef:client:update", "ops:chef:init"

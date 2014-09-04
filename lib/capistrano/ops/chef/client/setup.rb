@@ -26,7 +26,7 @@ Capistrano::Configuration.instance.load do
         desc "Set up the Opscode Chef client on the local machine"
         task :setup do
           if !exists?(:chef_server)
-            chef_server = find_servers(:roles => :chef_server)[0]
+            chef_server = find_servers(roles: :chef_server)[0]
           else
             chef_server = Capistrano::ServerDefinition.new(fetch(:chef_server))
           end
@@ -46,8 +46,8 @@ Capistrano::Configuration.instance.load do
 
           client_rb_file.open("wb") do |f|
             f.write(render(Pathname.new("../_files/client.rb.erb").expand_path(__FILE__),
-                           :chef_node_name => chef_node_name,
-                           :chef_server => chef_server.host))
+                           chef_node_name: chef_node_name,
+                           chef_server: chef_server.host))
           end
 
           Pathname.new(fetch(:validation_key)).expand_path(fetch(:config_root)).open("rb") do |f1|

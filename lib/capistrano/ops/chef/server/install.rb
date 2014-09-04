@@ -22,9 +22,9 @@ Capistrano::Configuration.instance.load do
     namespace :chef do
       namespace :server do
         desc "Install the Opscode Chef server"
-        task :install, :roles => :chef_server do
+        task :install, roles: :chef_server do
           run "bash",
-              :data => render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
+              data: render(Pathname.new("../../_files/init.sh.erb").expand_path(__FILE__))
 
           ["chef-expander.conf",
            "chef-server.conf",
@@ -34,7 +34,7 @@ Capistrano::Configuration.instance.load do
            "solr.rb"].each do |template_file|
             put render(Pathname.new("../_files/#{template_file}.erb").expand_path(__FILE__)),
                 "#{fetch(:cache_dir)}/chef/#{template_file}",
-                :mode => 0644
+                mode: 0644
           end
 
           ["knife",
@@ -42,17 +42,17 @@ Capistrano::Configuration.instance.load do
            "validation"].each do |name|
             put Pathname.new(fetch("#{name}_key".to_sym)).expand_path(fetch(:config_root)).open { |f| f.read },
                 "#{fetch(:cache_dir)}/chef/#{name}.pem",
-                :mode => 0600
+                mode: 0600
           end
 
           put Pathname.new("../_files/create_client.rb").expand_path(__FILE__).open { |f| f.read },
               ".chef/plugins/knife/create_client.rb",
-              :mode => 0644
+              mode: 0644
 
           run "bash",
-              :data => render([Pathname.new("../../../_files/includes.sh.erb").expand_path(__FILE__),
-                               Pathname.new("../../_files/includes.sh.erb").expand_path(__FILE__),
-                               Pathname.new("../_files/install.sh.erb").expand_path(__FILE__)])
+              data: render([Pathname.new("../../../_files/includes.sh.erb").expand_path(__FILE__),
+                            Pathname.new("../../_files/includes.sh.erb").expand_path(__FILE__),
+                            Pathname.new("../_files/install.sh.erb").expand_path(__FILE__)])
         end
 
         before "ops:chef:server:install", "ops:chef:init"

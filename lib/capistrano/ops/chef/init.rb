@@ -40,7 +40,7 @@ Capistrano::Configuration.instance.load do
           end
 
           if !exists?(:chef_server)
-            chef_servers = find_servers(:roles => :chef_server)
+            chef_servers = find_servers(roles: :chef_server)
 
             raise ArgumentError, "You specified #{chef_servers.size} Chef servers. Please specify exactly one" \
               if chef_servers.size != 1
