@@ -55,10 +55,6 @@ Capistrano::Configuration.instance.load do
               "#{fetch(:cache_dir)}/chef/chef-client",
               mode: 0755
 
-          put Pathname.new("../_files/chef-client.rb").expand_path(__FILE__).open { |f| f.read },
-              "#{fetch(:cache_dir)}/chef/chef-client.rb",
-              mode: 0755
-
           put Pathname.new(fetch(:validation_key)).expand_path(fetch(:config_root)).open { |f| f.read },
               "#{fetch(:cache_dir)}/chef/validation.pem",
               mode: 0600

@@ -2,16 +2,12 @@ cur_dir=$PWD
 prefix=<%= prefix.shellescape %>
 cache_dir=<%= cache_dir.shellescape %>/chef
 
-export -- BUNDLE_GEMFILE="/home/chef/client/Gemfile"
-
 <% if respond_to?(:rbenv_version) %>
 gem="rbenv exec gem"
-bundle="rbenv exec bundle"
 
 export -- RBENV_VERSION=<%= rbenv_version.shellescape %>
 <% else %>
 gem="gem"
-bundle="bundle"
 <% end %>
 
 ########################################################################################################################
@@ -27,24 +23,17 @@ sudo -- apt-get -qqy -- install build-essential git-core
 # Install the Chef client.                                                                                             #
 ########################################################################################################################
 
-sudo -E -- $gem install bundler
+sudo -E -- $gem install --prerelease chef
 
 <% if respond_to?(:rbenv_version) %>
 sudo -E -- rbenv rehash
 <% end %>
 
-chef_create_user /home/chef
-
-chef_install_repo /home/chef/client "git://github.com/scalient/cap-ops.git" chef-client
-
-chef_create_dir "${prefix}/etc/chef-client"
-chef_create_dir "${prefix}/var/chef-client"
-chef_create_dir "${prefix}/var/log/chef-client"
+sudo -- mkdir -p -- "${prefix}/etc/chef-client"
+sudo -- mkdir -p -- "${prefix}/var/chef-client"
+sudo -- mkdir -p -- "${prefix}/var/log/chef-client"
 
 install_file "${cache_dir}/chef-client" "${prefix}/bin"
 install_file "${cache_dir}/chef-client.rb" "${prefix}/bin"
 install_file "${cache_dir}/client.rb" "${prefix}/etc/chef-client"
 install_file "${cache_dir}/validation.pem" "${prefix}/etc/chef-client"
-
-# Install vendorized gems.
-sudo -E -u chef -- $bundle install --quiet --path vendor/bundle

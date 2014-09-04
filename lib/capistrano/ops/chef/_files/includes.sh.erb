@@ -34,15 +34,3 @@ function chef_install_repo {
         cd -- "$dst_repo" && sudo -u chef -- git pull -q --rebase; cd -- "$cur_dir"
     fi
 }
-
-# Creates the given directory and assigns ownership to the chef user.
-function chef_create_dir {
-
-    local -- chef_dir=$1
-
-    if [[ ! -d "$chef_dir" ]]; then
-
-        sudo -- mkdir -p -- "$chef_dir"
-        sudo -- chown -hR -- "chef:chef" "$chef_dir"
-    fi
-}
