@@ -20,5 +20,3 @@ source "https://rubygems.org"
 gemspec
 
 gem "capistrano", "< 3.0.0"
-gem "redcarpet"
-gem "yard"
