@@ -45,7 +45,8 @@ Capistrano::Configuration.instance.load do
           chef_clients.each do |chef_client|
             put render(Pathname.new("../_files/client.rb.erb").expand_path(__FILE__),
                        chef_node_name: chef_client.options[:chef_node_name],
-                       chef_server: chef_client.host != chef_server.host ? chef_server.host : "localhost"),
+                       chef_server: chef_client.host != chef_server.host ? chef_server.host : "localhost",
+                       chef_validator: fetch(:chef_validator, "chef-validator")),
                 "#{fetch(:cache_dir)}/chef/client.rb",
                 hosts: chef_client.host,
                 mode: 0644

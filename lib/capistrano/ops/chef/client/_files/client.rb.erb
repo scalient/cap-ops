@@ -1,7 +1,7 @@
 log_level               :info
 log_location            STDOUT
 chef_server_url         <%= chef_server.dump %>
-validation_client_name  "chef-validator"
+validation_client_name  <%= chef_validator.dump %>
 
 <% if !chef_node_name.nil? %>
 node_name               <%= chef_node_name.dump %>
