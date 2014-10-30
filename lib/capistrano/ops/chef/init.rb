@@ -23,9 +23,7 @@ Capistrano::Configuration.instance.load do
     namespace :chef do
       desc "[internal] Initialize the Chef task environment"
       task :init do
-        [:knife,
-         :validation,
-         :webui].each do |name|
+        [:validation].each do |name|
           var_name = "#{name}_key".to_sym
 
           set var_name, fetch(var_name, "chef/#{name}.pem")
