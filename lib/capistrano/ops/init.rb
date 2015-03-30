@@ -27,7 +27,7 @@ Capistrano::Configuration.instance.load do
 
       set :prefix, fetch(:prefix, "/usr/local")
       set :user, fetch(:user, "ubuntu")
-      set :rbenv_version, fetch(:rbenv_version, "1.9.3-p362")
+      set :rbenv_version, fetch(:rbenv_version, "2.2.1")
     end
   end
 end

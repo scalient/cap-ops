@@ -11,9 +11,7 @@ node_name               <%= chef_node_name.dump %>
 client_key              <%= prefix.dump %> "/etc/chef-client/client.pem"
 validation_key          <%= prefix.dump %> "/etc/chef-client/validation.pem"
 
-file_cache_path         <%= prefix.dump %> "/var/chef-client/cache"
-file_backup_path        <%= prefix.dump %> "/var/chef-client/backup"
-node_path               <%= prefix.dump %> "/var/chef-client/node"
+cache_path              <%= prefix.dump %> "/var/chef-client"
 cache_type              "BasicFile"
 cache_options           path: <%= prefix.dump %> "/var/chef-client/checksums"
 <% end %>
