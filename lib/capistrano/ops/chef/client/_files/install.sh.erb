@@ -23,7 +23,7 @@ sudo -- apt-get -qqy -- install build-essential git-core libffi-dev zlib1g-dev
 # Install the Chef client.                                                                                             #
 ########################################################################################################################
 
-sudo -E -- $gem install --prerelease chef
+sudo -E -- $gem install "chef:< 15"
 
 <% if respond_to?(:rbenv_version) %>
 sudo -E -- rbenv rehash
